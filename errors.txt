@@ -1,0 +1,24 @@
+echo $$      # may differ depending on project rules //check this
+echo ${USER}abc   # should behave like bash (careful!) //check this
+echo ${NOTSET:-fallback}
+Estes três temos igual ao do mota!!
+
+ERRO:Não passou este teste
+cat << EOF << END
+>first
+>EOF
+>second
+>END
+Just working with one heredoc file
+
+made-jes@DESKTOP-I03E11I:~/minishell$ ./minishell
+minishell$ sleep 10
+^Cminishell$
+not showing in a newline
+
+Ctrl+\ → 131 ERROR:need to check how to test it"
+
+não passou
+echo << $USER
+
+Melhorar heredoc!
