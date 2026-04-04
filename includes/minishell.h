@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:50:01 by made-jes          #+#    #+#             */
-/*   Updated: 2026/04/04 16:22:59 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/04 17:00:12 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,6 @@ void			parse_redirections(t_ast *node, t_token *start, t_token *end);
 //Signals and commands to exit
 void			setup_signals(void);
 void			ign_signals(void);
-void			handle_process_status(int status, t_shell *shell, int *sigint_received);
 
 //Freeing
 void			free_split(char **arr);
