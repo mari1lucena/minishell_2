@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:03:43 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/04 13:15:43 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/04 15:49:30 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,18 @@ static void	save_stds(int fds[2])
 	fds[1] = dup(STDOUT_FILENO);
 }
 
-
-void exec_cmd_for_builtin(t_ast *node, int *fds_sup, t_shell *shell, int in_pipe)
+void	exec_cmd_for_builtin(t_ast *node, int *fds_sup, t_shell *shell,\
+	int in_pipe)
 {
-    //save_stds(fds_sup);
-    if (apply_redirecs(node->redirs))
-    {
+	if (apply_redirecs(node->redirs))
+	{
 		if (!in_pipe)
-        	restore_stds(fds_sup);
-        shell->last_exit = 1;
-        return;
-    }
-    shell->last_exit = exec_builtin(shell, node->cmd_args);
-    if (!in_pipe)
+			restore_stds(fds_sup);
+		shell->last_exit = 1;
+		return ;
+	}
+	shell->last_exit = exec_builtin(shell, node->cmd_args);
+	if (!in_pipe)
 		restore_stds(fds_sup);
 }
 
@@ -65,36 +64,28 @@ static void	fork_wait(t_ast *node, int *fds, t_shell *shell, int fds_sup[2])
 		perror("fork");
 }
 
-void    exec_cmd(t_ast *node, int *fds, t_shell *shell)
+void	exec_cmd(t_ast *node, int *fds, t_shell *shell)
 {
-    int     fds_sup[2];
-	int		in_pipe;
+	int	fds_sup[2];
+	int	in_pipe;
 
 	in_pipe = (fds[0] != STDIN_FILENO || fds[1] != STDOUT_FILENO);
-    save_stds(fds_sup);
-	//printf("%d\n", in_pipe);
-    if (fds[0] != STDIN_FILENO)
-        dup2(fds[0], STDIN_FILENO);
-    if (fds[1] != STDOUT_FILENO)
-        dup2(fds[1], STDOUT_FILENO);
-
-    /*if (apply_redirecs(node->redirs))
-    {
-        restore_stds(fds_sup);
-        shell->last_exit = 1;
-        return ;
-    }*/
-    if (is_builtin(node))
-        exec_cmd_for_builtin(node, fds_sup, shell, in_pipe);
-    else
-    {
+	save_stds(fds_sup);
+	if (fds[0] != STDIN_FILENO)
+		dup2(fds[0], STDIN_FILENO);
+	if (fds[1] != STDOUT_FILENO)
+		dup2(fds[1], STDOUT_FILENO);
+	if (is_builtin(node))
+		exec_cmd_for_builtin(node, fds_sup, shell, in_pipe);
+	else
+	{
 		if (apply_redirecs(node->redirs))
-    	{
-       		restore_stds(fds_sup);
-       		shell->last_exit = 1;
-        	return ;
+		{
+			restore_stds(fds_sup);
+			shell->last_exit = 1;
+			return ;
 		}
-        fork_wait(node, fds, shell, fds_sup);
-        restore_stds(fds_sup);
-    }
+		fork_wait(node, fds, shell, fds_sup);
+		restore_stds(fds_sup);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 09:15:14 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/04 15:17:26 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/04 15:59:18 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,36 +50,36 @@ void	checker_path(char *path, t_ast *node, t_shell *shell)
 	}
 }
 
-void	exec_cmd_aux(t_ast *node, int *fds, t_shell *shell, int fds_sup[2])
+char	*prepare_child(t_ast *node, int *fds, t_shell *shell, int fds_sup[2])
 {
 	char	*path;
-	char	**envp;
-	int	i;
 
-	i = 0;
 	close(fds_sup[0]);
 	close(fds_sup[1]);
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGINT, SIG_DFL);
-
 	if (fds[0] != STDIN_FILENO)
 		dup2(fds[0], STDIN_FILENO);
 	if (fds[1] != STDOUT_FILENO)
 		dup2(fds[1], STDOUT_FILENO);
-
-	while (node->cmd_args[i] && node->cmd_args[i][0] == '\0')
-		i++;
-	if (!node->cmd_args[i])
-	{
-		shell->last_exit = 0;
-		cleanup_and_exit(shell, 0);
-	}
-	node->cmd_args = &node->cmd_args[i];
+	while (*node->cmd_args && **node->cmd_args == '\0')
+		node->cmd_args++;
+	if (!*node->cmd_args)
+		cleanup_and_exit(shell, (shell->last_exit = 0, 0));
 	if (ft_strchr(node->cmd_args[0], '/'))
-	path = ft_strdup(node->cmd_args[0]);
+		path = ft_strdup(node->cmd_args[0]);
 	else
-	path = find_path(node->cmd_args[0], shell);
+		path = find_path(node->cmd_args[0], shell);
 	checker_path(path, node, shell);
+	return (path);
+}
+
+void	exec_cmd_aux(t_ast *node, int *fds, t_shell *shell, int fds_sup[2])
+{
+	char	*path;
+	char	**envp;
+
+	path = prepare_child(node, fds, shell, fds_sup);
 	envp = env_array(shell->env);
 	apply_redirecs(node->redirs);
 	execve(path, node->cmd_args, envp);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlucena- <mlucena-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:06:47 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/03/28 12:56:55 by mlucena-         ###   ########.fr       */
+/*   Updated: 2026/04/04 15:37:51 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,6 @@ int	n_flag(char *str)
 	return (i > 1);
 }
 
-/*static void	check_for_sign(char **args, int *i)
-{
-	if (args[*i][0] == '$')
-	{
-		printf("%s", args[*i] + 1);
-	}
-	else
-		printf("%s", args[*i]);
-	if (args[*i + 1])
-		printf(" ");
-	(*i)++;
-}*/
-
 int	ft_echo(char **args)
 {
 	int	i;
@@ -57,12 +44,12 @@ int	ft_echo(char **args)
 	}
 	while (args[i])
 	{
-		printf("%s", args[i]);
+		write(STDOUT_FILENO, args[i], ft_strlen(args[i]));
 		if (args[i + 1])
-			printf(" ");
+			write(STDOUT_FILENO, " ", 1);
 		i++;
 	}
 	if (nl)
-		printf("\n");
+		write(STDOUT_FILENO, "\n", 1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:50:01 by made-jes          #+#    #+#             */
-/*   Updated: 2026/04/04 13:04:00 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/04 16:22:59 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@ char			*handle_double_operator(const char *line, int *i);
 
 //Expander
 void			add_env_var(char *entry);
-//	void			init_env(char **envp);
 char			*get_env_value(char *key);
 char			*expand_var(char *res, char *str, int *i);
 void			expand_tokens(t_token **tokens);
@@ -139,6 +138,7 @@ void			parse_redirections(t_ast *node, t_token *start, t_token *end);
 //Signals and commands to exit
 void			setup_signals(void);
 void			ign_signals(void);
+void			handle_process_status(int status, t_shell *shell, int *sigint_received);
 
 //Freeing
 void			free_split(char **arr);
@@ -151,7 +151,8 @@ void			cleanup_and_exit(t_shell *shell, int exit_code);
 //Execution
 void			exec_ast(t_ast *node, int *fds, t_shell *shell);
 void			restore_stds(int fds[2]);
-void			exec_cmd_for_builtin(t_ast *node, int *fds_sup, t_shell *shell, int in_pipe);
+void			exec_cmd_for_builtin(t_ast *node, int *fds_sup,\
+					t_shell *shell, int in_pipe);
 void			exec_cmd_aux(t_ast *node, int *fds,\
 					t_shell *shell, int fds_sup[2]);
 void			exec_cmd(t_ast *node, int *fds, t_shell *shell);

@@ -33,3 +33,15 @@ void	ign_signals(void)
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 }
+
+/*void	handle_process_status(int status, t_shell *shell, int *sigint_received)
+{
+	if (WIFEXITED(status))
+		shell->last_exit = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGINT)
+			*sigint_received = 1;
+		shell->last_exit = 128 + WTERMSIG(status);
+	}
+}*/
