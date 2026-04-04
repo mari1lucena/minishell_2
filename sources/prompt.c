@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 19:33:21 by made-jes          #+#    #+#             */
-/*   Updated: 2026/04/04 16:41:07 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/04 17:25:33 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,11 @@ void	run_prompt(void)
 		setup_signals();
 		line = readline("minishell$ ");
 		get_shell()->line = line;
+		if (get_shell()->sigint_received)
+		{
+			get_shell()->last_exit = 130;
+			get_shell()->sigint_received = 0;
+		}
 		if (!line)
 		{
 			printf("exit\n");
