@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:03:43 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/04 15:49:30 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/04 17:34:13 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,11 @@ static void	fork_wait(t_ast *node, int *fds, t_shell *shell, int fds_sup[2])
 		if (WIFEXITED(exit_code))
 			get_shell()->last_exit = WEXITSTATUS(exit_code);
 		else if (WIFSIGNALED(exit_code))
+		{
+			if (WTERMSIG(exit_code) == SIGINT)
+				write(1, "\n", 1);
 			get_shell()->last_exit = 128 + WTERMSIG(exit_code);
+		}
 		write_status(get_shell()->last_exit);
 	}
 	else if (pid < 0)
