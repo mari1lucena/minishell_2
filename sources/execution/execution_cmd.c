@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marilins <marilins@student.42.fr>          +#+  +:+       +#+        */
+/*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:03:43 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/03/31 18:46:24 by marilins         ###   ########.fr       */
+/*   Updated: 2026/04/04 13:15:43 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,53 +19,20 @@ static void	save_stds(int fds[2])
 }
 
 
-/*void	exec_cmd_for_builtin(t_ast *node, int *fds_sup, t_shell *shell)
+void exec_cmd_for_builtin(t_ast *node, int *fds_sup, t_shell *shell, int in_pipe)
 {
-	save_stds(fds_sup);
-
-	// 🔥 aplica redirections antes de executar o builtin
-	if (apply_redirecs(node->redirs))
-	{
-		restore_stds(fds_sup);
-		shell->last_exit = 1;
-		return ;
-	}
-
-	// executa o builtin com todos os args intactos
-	shell->last_exit = exec_builtin(shell, node->cmd_args);
-
-	restore_stds(fds_sup);
-}*/
-
-// Função para comandos built-in (echo, cd, export, etc.)
-void exec_cmd_for_builtin(t_ast *node, int *fds_sup, t_shell *shell)
-{
-    // 1️⃣ Salva os stds originais para restaurar depois
-    save_stds(fds_sup);
-
-    // 2️⃣ Aplica redirecionamentos do comando antes de executá-lo
-    //    Se aplicar redirecionamento falhar (ex: diretório não existe), retorna com erro
+    //save_stds(fds_sup);
     if (apply_redirecs(node->redirs))
     {
-        restore_stds(fds_sup);
+		if (!in_pipe)
+        	restore_stds(fds_sup);
         shell->last_exit = 1;
         return;
     }
-
-    // 3️⃣ Executa o built-in com os argumentos corretos
     shell->last_exit = exec_builtin(shell, node->cmd_args);
-
-    // 4️⃣ Restaura os stds originais
-    restore_stds(fds_sup);
+    if (!in_pipe)
+		restore_stds(fds_sup);
 }
-/*void	exec_cmd_for_builtin(t_ast *node, int *fds_sup, t_shell *shell)
-{
-	if (!ft_strncmp(node->cmd_args[0], "exit", 5))
-		restore_stds(fds_sup);
-	shell->last_exit = exec_builtin(shell, node->cmd_args);
-	if (ft_strncmp(node->cmd_args[0], "exit", 5))
-		restore_stds(fds_sup);
-}*/
 
 static void	write_status(int exit_code)
 {
@@ -98,52 +65,35 @@ static void	fork_wait(t_ast *node, int *fds, t_shell *shell, int fds_sup[2])
 		perror("fork");
 }
 
-/*void	exec_cmd(t_ast *node, int *fds, t_shell *shell)
-{
-	int		fds_sup[2];
-
-	save_stds(fds_sup);
-	if (apply_redirecs(node->redirs))
-	{
-		restore_stds(fds_sup);
-		shell->last_exit = 1;
-		return ;
-	}
-	if (is_builtin(node))
-		return (exec_cmd_for_builtin(node, fds_sup, shell));
-	fork_wait(node, fds, shell, fds_sup);
-}*/
-
 void    exec_cmd(t_ast *node, int *fds, t_shell *shell)
 {
     int     fds_sup[2];
+	int		in_pipe;
 
-    // Guarda os originais APENAS se não for um builtin que vai ser executado 
-    // num filho (como no caso dos pipes, onde já estamos num processo separado).
-    // Mas para simplificar a tua árvore, vamos sempre guardar e restaurar aqui.
+	in_pipe = (fds[0] != STDIN_FILENO || fds[1] != STDOUT_FILENO);
     save_stds(fds_sup);
-    
-    // Aplicamos as pipes se houver
+	//printf("%d\n", in_pipe);
     if (fds[0] != STDIN_FILENO)
         dup2(fds[0], STDIN_FILENO);
     if (fds[1] != STDOUT_FILENO)
         dup2(fds[1], STDOUT_FILENO);
 
-    // Agora aplicamos os redirecionamentos DO COMANDO (que têm prioridade sobre pipes)
-    if (apply_redirecs(node->redirs))
+    /*if (apply_redirecs(node->redirs))
     {
         restore_stds(fds_sup);
         shell->last_exit = 1;
         return ;
-    }
-
+    }*/
     if (is_builtin(node))
-    {
-        exec_cmd_for_builtin(node, fds_sup, shell);
-    }
+        exec_cmd_for_builtin(node, fds_sup, shell, in_pipe);
     else
     {
-        // O fork_wait vai criar o filho, mas também precisamos restaurar o pai
+		if (apply_redirecs(node->redirs))
+    	{
+       		restore_stds(fds_sup);
+       		shell->last_exit = 1;
+        	return ;
+		}
         fork_wait(node, fds, shell, fds_sup);
         restore_stds(fds_sup);
     }

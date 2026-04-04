@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex_helper.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marilins <marilins@student.42.fr>          +#+  +:+       +#+        */
+/*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 09:15:14 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/03/31 18:42:48 by marilins         ###   ########.fr       */
+/*   Updated: 2026/04/04 13:21:53 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	exec_cmd_aux(t_ast *node, int *fds, t_shell *shell, int fds_sup[2])
 		cleanup_and_exit(shell, 126);
 	}
 	node->cmd_args = &node->cmd_args[i];
-		if (access(path, F_OK) == 0 && access(path, X_OK) != 0)
+	if (access(path, F_OK) == 0 && access(path, X_OK) != 0)
 	{
 		perror(path);
 		cleanup_and_exit(shell, 126);

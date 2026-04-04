@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:37:51 by made-jes          #+#    #+#             */
-/*   Updated: 2026/03/28 17:37:54 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/04 13:12:59 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,27 @@
 
 static void	exec_pipe_aux1(t_ast *node, int *fds, t_shell *shell, int *pipe_fd)
 {
+	int	new_fds[2];
+
 	dup2(pipe_fd[1], STDOUT_FILENO);
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
-	if (fds[0] != STDIN_FILENO)
-		dup2(fds[0], STDIN_FILENO);
-	exec_ast(node->left, fds, shell);
+	new_fds[0] = fds[0];
+	new_fds[1] = pipe_fd[1];
+	exec_ast(node->left, new_fds, shell);
 	cleanup_and_exit(shell, shell->last_exit);
 }
 
 static void	exec_pipe_aux2(t_ast *node, int *fds, t_shell *shell, int *pipe_fd)
 {
+	int	new_fds[2];
+
 	dup2(pipe_fd[0], STDIN_FILENO);
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
-	if (fds[1] != STDOUT_FILENO)
-		dup2(fds[1], STDOUT_FILENO);
-	exec_ast(node->right, fds, shell);
+	new_fds[0] = pipe_fd[0];
+	new_fds[1] = fds[1];
+	exec_ast(node->right, new_fds, shell);
 	cleanup_and_exit(shell, shell->last_exit);
 }
 
