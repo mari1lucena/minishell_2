@@ -61,21 +61,34 @@ static void	process_token(t_token **new, t_token *current, int split)
 	free(exp);
 }
 
+static void	process_single_token(t_token **new, t_token *current, t_token *prev)
+{
+	if (current->type == WORD)
+	{
+		if (prev && prev->type == 6)
+			append_token_list(new, new_token(current->value));
+		else
+			process_token(new, current, !current->was_quoted);
+	}
+	else
+		append_token_list(new, new_token(current->value));
+}
+
 void	expand_tokens(t_token **tokens)
 {
 	t_token	*current;
 	t_token	*new;
+	t_token	*prev;
 
 	if (!tokens || !*tokens)
 		return ;
 	current = *tokens;
 	new = NULL;
+	prev = NULL;
 	while (current)
 	{
-		if (current->type == WORD)
-			process_token(&new, current, !current->was_quoted);
-		else
-			append_token_list(&new, new_token(current->value));
+		process_single_token(&new, current, prev);
+		prev = current;
 		current = current->next;
 	}
 	free_token_list(*tokens);

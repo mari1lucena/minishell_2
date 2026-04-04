@@ -11,14 +11,6 @@ cat << EOF << END
 >END
 Just working with one heredoc file
 
-made-jes@DESKTOP-I03E11I:~/minishell$ ./minishell
-minishell$ sleep 10
-^Cminishell$
-not showing in a newline
-
 Ctrl+\ → 131 ERROR:need to check how to test it"
-
-não passou
-echo << $USER
 
 Melhorar heredoc!
