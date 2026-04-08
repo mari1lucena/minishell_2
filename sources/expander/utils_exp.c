@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 23:06:41 by made-jes          #+#    #+#             */
-/*   Updated: 2026/04/04 17:25:36 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/08 00:32:17 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ void	init_shell(char **envp)
 	sh->line = NULL;
 	sh->tokens = NULL;
 	sh->ast = NULL;
+	sh->in_prompt = 0;
 }
 
 char	*handle_dollar_quote(char *res, char *str, int *i)

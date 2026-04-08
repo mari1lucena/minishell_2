@@ -29,6 +29,26 @@ static char	*expand_exit_status(void)
 	return (ft_itoa(get_shell()->last_exit));
 }
 
+static char	*handle_braced_var(char *res, char *str, int *i)
+{
+	char	*key;
+	char	*val;
+	int		start;
+
+	(*i)++;
+	start = *i;
+	while (str[*i] && str[*i] != '}')
+		(*i)++;
+	key = ft_substr(str, start, *i - start);
+	if (str[*i] == '}')
+		(*i)++;
+	val = get_env_value(key);
+	if (val)
+		res = ft_strjoin_free(res, val);
+	free(key);
+	return (res);
+}
+
 char	*expand_var(char *res, char *str, int *i)
 {
 	char	*key;
@@ -43,6 +63,8 @@ char	*expand_var(char *res, char *str, int *i)
 		(*i)++;
 		return (res);
 	}
+	if (str[*i] == '{')
+		return (handle_braced_var(res, str, i));
 	len = var_len(&str[*i]);
 	if (len == 0)
 		return (ft_strjoin_char_free(res, '$'));
@@ -75,21 +97,4 @@ char	*expand_dollar(char *str)
 			res = ft_strjoin_char_free(res, str[i++]);
 	}
 	return (res);
-}
-
-void	append_token_list(t_token **head, t_token *new_node)
-{
-	t_token	*current;
-
-	if (!new_node)
-		return ;
-	if (!*head)
-	{
-		*head = new_node;
-		return ;
-	}
-	current = *head;
-	while (current->next)
-		current = current->next;
-	current->next = new_node;
 }

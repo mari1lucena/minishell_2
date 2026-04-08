@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 19:33:21 by made-jes          #+#    #+#             */
-/*   Updated: 2026/04/04 17:27:48 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/08 00:33:09 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,9 @@ void	run_prompt(void)
 	while (1)
 	{
 		setup_signals();
+		get_shell()->in_prompt = 1;
 		line = readline("minishell$ ");
+		get_shell()->in_prompt = 0;
 		get_shell()->line = line;
 		if (!line)
 		{

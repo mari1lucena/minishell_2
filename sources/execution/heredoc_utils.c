@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:04:20 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/03/28 19:06:51 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/08 01:16:25 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,9 @@ int	finish_here_doc(t_redir *redir, char *filename, int status)
 		unlink(filename);
 		free(filename);
 		get_shell()->last_exit = 130;
-		exit(get_shell()->last_exit);
+		if (redir)
+			redir->heredoc_file = NULL;
+		return (-1);
 	}
 	if (redir->heredoc_file)
 	{

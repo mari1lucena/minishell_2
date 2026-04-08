@@ -1,7 +1,14 @@
 echo $$      # may differ depending on project rules //check this
-echo ${USER}abc   # should behave like bash (careful!) //check this
+Ah! $$ in the shell is a special variable that expands to the process ID (PID) of the current shell.
+como não fala nada no subject não deveríamos tratar
+
 echo ${NOTSET:-fallback}
-Estes três temos igual ao do mota!!
+Agora parece nada porque ele pesquisa poe NOTSET e como não há printa nada
+
+cd - #não és obrigado a dar handle ao cd -
+funciona só nãp printa o path
+
+Problemas com o heredoc com o delimitador estar quoted ou não, tem que assumir o EOF de ambas as maneiras
 
 ERRO:Não passou este teste
 cat << EOF << END
@@ -9,8 +16,9 @@ cat << EOF << END
 >EOF
 >second
 >END
-Just working with one heredoc file
+Just working with one heredoc file, tem que funcionar com mais
 
 Ctrl+\ → 131 ERROR:need to check how to test it"
+not showing 131, but 127
 
-Melhorar heredoc!
+Melhorar heredoc! para dois ficheiros

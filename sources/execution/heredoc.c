@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlucena- <mlucena-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:04:28 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/03/28 12:04:35 by mlucena-         ###   ########.fr       */
+/*   Updated: 2026/04/08 01:17:25 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,5 +127,7 @@ int	here_doc_execution(t_redir *redir)
 	dup2(filefd, STDIN_FILENO);
 	close(filefd);
 	unlink(redir->heredoc_file);
+	free(redir->heredoc_file);
+	redir->heredoc_file = NULL;
 	return (0);
 }

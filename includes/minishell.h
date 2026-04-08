@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:50:01 by made-jes          #+#    #+#             */
-/*   Updated: 2026/04/04 17:26:25 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/08 00:31:25 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ typedef struct s_shell
 	t_env		*env;
 	int			fd;
 	int			last_exit;
+	int			in_prompt;
 }				t_shell;
 
 t_shell			*get_shell(void);

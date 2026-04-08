@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:03:43 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/04 17:34:13 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/08 00:25:22 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,13 @@ static void	fork_wait(t_ast *node, int *fds, t_shell *shell, int fds_sup[2])
 {
 	pid_t	pid;
 	int		exit_code;
+	int		in_pipe;
 
 	ign_signals();
+	in_pipe = (fds[0] != STDIN_FILENO || fds[1] != STDOUT_FILENO);
 	pid = fork();
 	if (pid == 0)
 		exec_cmd_aux(node, fds, shell, fds_sup);
-	restore_stds(fds_sup);
 	if (pid > 0)
 	{
 		waitpid(pid, &exit_code, 0);
@@ -58,7 +59,7 @@ static void	fork_wait(t_ast *node, int *fds, t_shell *shell, int fds_sup[2])
 			get_shell()->last_exit = WEXITSTATUS(exit_code);
 		else if (WIFSIGNALED(exit_code))
 		{
-			if (WTERMSIG(exit_code) == SIGINT)
+			if (WTERMSIG(exit_code) == SIGINT && !in_pipe)
 				write(1, "\n", 1);
 			get_shell()->last_exit = 128 + WTERMSIG(exit_code);
 		}
@@ -92,4 +93,5 @@ void	exec_cmd(t_ast *node, int *fds, t_shell *shell)
 		fork_wait(node, fds, shell, fds_sup);
 		restore_stds(fds_sup);
 	}
+	restore_stds(fds_sup);
 }
