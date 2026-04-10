@@ -63,9 +63,20 @@ static void	process_token(t_token **new, t_token *current, int split)
 
 static void	process_single_token(t_token **new, t_token *current, t_token *prev)
 {
+	t_token	*new_node;
+	char	*stripped;
+
 	if (current->type == WORD)
 	{
-		if (prev && prev->type == 6)
+		if (prev && prev->type == HEREDOC)
+		{
+			stripped = expand_token_value(current->value);
+			new_node = new_token(stripped);
+			new_node->was_quoted = current->was_quoted;
+			free(stripped);
+			append_token_list(new, new_node);
+		}
+		else if (prev && prev->type == HEREDOC)
 			append_token_list(new, new_token(current->value));
 		else
 			process_token(new, current, !current->was_quoted);

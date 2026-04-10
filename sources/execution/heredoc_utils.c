@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:04:20 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/08 01:16:25 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/10 23:01:31 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,11 @@ void	cleanup_heredoc_child(t_shell *shell)
 
 char	*expand_heredoc_line(char *line)
 {
-	t_token	*token;
-	t_token	*original_tokens;
 	char	*expanded;
 
-	token = new_token(line);
-	if (!token)
+	if (!line)
 		return (NULL);
-	token->type = STR;
-	token->was_quoted = 1;
-	original_tokens = get_shell()->tokens;
-	expand_tokens(&token);
-	if (!token || !token->value)
-	{
-		if (token)
-			free_token_list(token);
-		get_shell()->tokens = original_tokens;
-		return (NULL);
-	}
-	expanded = ft_strdup(token->value);
-	free_token_list(token);
-	get_shell()->tokens = original_tokens;
+	expanded = expand_dollar(line);
 	return (expanded);
 }
 

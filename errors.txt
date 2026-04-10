@@ -1,11 +1,5 @@
-echo $$      # may differ depending on project rules //check this
-Ah! $$ in the shell is a special variable that expands to the process ID (PID) of the current shell.
-como não fala nada no subject não deveríamos tratar
-
 echo ${NOTSET:-fallback}
 Agora parece nada porque ele pesquisa poe NOTSET e como não há printa nada
-
-Problemas com o heredoc com o delimitador estar quoted ou não, tem que assumir o EOF de ambas as maneiras
 
 ERRO:Não passou este teste
 cat << EOF << END
