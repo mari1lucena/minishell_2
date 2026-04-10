@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:06:38 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/03/28 17:23:55 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/10 22:28:42 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	ft_cd(t_shell *shell, char **args)
 {
 	char	*oldpwd;
 	char	*target;
+	char	cwd[PATH_MAX];
 
 	if (args[1] && args[2])
 		return (fprintf(stderr, "cd: too many arguments\n"), 1);
@@ -43,15 +44,11 @@ int	ft_cd(t_shell *shell, char **args)
 		oldpwd = ft_strdup(oldpwd);
 	target = resolve_cd_target(shell, args[1]);
 	if (!target)
-	{
-		printf("cd: no such file or directory\n");
-		return (free(oldpwd), 1);
-	}
+		return (printf("cd: no such file or directory\n"), free(oldpwd), 1);
 	if (chdir(target) != 0)
-	{
-		perror("cd");
-		return (free(oldpwd), 1);
-	}
+		return (perror("cd"), free(oldpwd), 1);
+	if (args[1] && ft_strncmp(args[1], "-", 2) == 0 && getcwd(cwd, sizeof(cwd)))
+		printf("%s\n", target);
 	update_cd_env(shell, oldpwd);
 	return (free(oldpwd), 0);
 }
