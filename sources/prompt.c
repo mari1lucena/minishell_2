@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 19:33:21 by made-jes          #+#    #+#             */
-/*   Updated: 2026/04/08 00:33:09 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/10 23:35:27 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,7 @@ void	process_ast(t_token *tokens)
 	fds[1] = STDOUT_FILENO;
 	get_shell()->ast = build_ast(tokens);
 	if (handle_here_doc_tree(get_shell()->ast))
-	{
-		get_shell()->last_exit = 1;
 		return ;
-	}
 	exec_ast(get_shell()->ast, fds, get_shell());
 	wait_for_all_children(get_shell());
 	free_ast(get_shell()->ast);

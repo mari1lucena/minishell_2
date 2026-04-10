@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlucena- <mlucena-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:04:56 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/03/28 12:04:59 by mlucena-         ###   ########.fr       */
+/*   Updated: 2026/04/10 23:30:27 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,24 @@
 
 int	apply_redirecs(t_redir *redirs)
 {
+	t_redir	*last_heredoc;
+	t_redir	*temp;
+
+	last_heredoc = NULL;
+	temp = redirs;
+	while (temp)
+	{
+		if (temp->type == HEREDOC)
+			last_heredoc = temp;
+		temp = temp->next;
+	}
 	while (redirs)
 	{
-		if (handle_what_redir(redirs))
-			return (1);
+		if (redirs->type != HEREDOC || redirs == last_heredoc)
+		{
+			if (handle_what_redir(redirs))
+				return (1);
+		}
 		redirs = redirs->next;
 	}
 	return (0);
