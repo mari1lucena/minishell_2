@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlucena- <mlucena-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:07:36 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/03/28 12:07:38 by mlucena-         ###   ########.fr       */
+/*   Updated: 2026/04/11 17:42:57 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	handle_export_arg(t_shell *shell, char *arg)
 	value = NULL;
 	if (!is_valid_identifier(arg))
 	{
-		fprintf(stderr, "minishell:export:'%s': not a valid identifier\n", arg);
+		fprintf(stderr, "minishell:export:`%s': not a valid identifier\n", arg);
 		return (1);
 	}
 	if (!parse_export_arg(arg, &key, &value, &has_equal))

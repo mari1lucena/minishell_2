@@ -149,7 +149,6 @@ cat <<EOF | cat
 >line2
 >EOF
 
-ERRO:Não passou este teste
 cat << EOF << END
 >first
 >EOF

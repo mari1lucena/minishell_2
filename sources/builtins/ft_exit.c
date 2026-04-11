@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlucena- <mlucena-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:07:13 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/03/28 12:52:24 by mlucena-         ###   ########.fr       */
+/*   Updated: 2026/04/11 17:40:42 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	ft_exit(t_shell *shell, char **args)
 			printf("exit\n");
 			fprintf(stderr, "exit: %s: numeric argument required\n", args[1]);
 			exit_code = 2;
-			exit(exit_code);
+			cleanup_and_exit(shell, exit_code);
 		}
 		else if (args[2])
 		{
