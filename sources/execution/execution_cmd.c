@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:03:43 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/08 00:25:22 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/11 17:34:32 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static void	save_stds(int fds[2])
 void	exec_cmd_for_builtin(t_ast *node, int *fds_sup, t_shell *shell,\
 	int in_pipe)
 {
+	int	is_exit;
+
 	if (apply_redirecs(node->redirs))
 	{
 		if (!in_pipe)
@@ -28,8 +30,14 @@ void	exec_cmd_for_builtin(t_ast *node, int *fds_sup, t_shell *shell,\
 		shell->last_exit = 1;
 		return ;
 	}
+	is_exit = (ft_strncmp(node->cmd_args[0], "exit", 5) == 0);
+	if (is_exit)
+	{
+		close(fds_sup[0]);
+		close(fds_sup[1]);
+	}
 	shell->last_exit = exec_builtin(shell, node->cmd_args);
-	if (!in_pipe)
+	if (!in_pipe && !is_exit)
 		restore_stds(fds_sup);
 }
 

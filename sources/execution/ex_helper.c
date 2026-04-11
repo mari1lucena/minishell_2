@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 09:15:14 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/04 15:59:18 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/11 16:56:33 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@ void	cleanup_and_exit(t_shell *shell, int exit_code)
 	exit(exit_code);
 }
 
+static void	exit_error(char *path, t_shell *shell, int code)
+{
+	free(path);
+	cleanup_and_exit(shell, code);
+}
+
 void	checker_path(char *path, t_ast *node, t_shell *shell)
 {
 	struct stat	st;
@@ -35,18 +41,18 @@ void	checker_path(char *path, t_ast *node, t_shell *shell)
 	if (access(path, F_OK) != 0)
 	{
 		perror(node->cmd_args[0]);
-		cleanup_and_exit(shell, 127);
+		exit_error(path, shell, 127);
 	}
 	if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
 	{
 		ft_putstr_fd(node->cmd_args[0], 2);
 		ft_putstr_fd(": Is a directory\n", 2);
-		cleanup_and_exit(shell, 126);
+		exit_error(path, shell, 126);
 	}
 	if (access(path, X_OK) != 0)
 	{
 		perror(node->cmd_args[0]);
-		cleanup_and_exit(shell, 126);
+		exit_error(path, shell, 126);
 	}
 }
 
@@ -85,5 +91,6 @@ void	exec_cmd_aux(t_ast *node, int *fds, t_shell *shell, int fds_sup[2])
 	execve(path, node->cmd_args, envp);
 	perror("execve");
 	shell->last_exit = 1;
+	free(path);
 	cleanup_and_exit(shell, 1);
 }

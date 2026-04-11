@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:37:51 by made-jes          #+#    #+#             */
-/*   Updated: 2026/04/04 17:41:11 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/11 17:25:25 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,16 @@ void	exec_pipe(t_ast *node, int *fds, t_shell *shell)
 
 void	restore_stds(int fds[2])
 {
-	dup2(fds[0], STDIN_FILENO);
-	dup2(fds[1], STDOUT_FILENO);
-	close(fds[0]);
-	close(fds[1]);
+	if (fds[0] != -1)
+	{
+		dup2(fds[0], STDIN_FILENO);
+		close(fds[0]);
+		fds[0] = -1;
+	}
+	if (fds[1] != -1)
+	{
+		dup2(fds[1], STDOUT_FILENO);
+		close(fds[1]);
+		fds[1] = -1;
+	}
 }
