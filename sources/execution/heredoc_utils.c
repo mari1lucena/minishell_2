@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:04:20 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/11 18:40:04 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/11 22:27:23 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,7 @@ int	spawn_here_doc_reader(t_redir *redir, int file, char *filename)
 	}
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
-		here_doc_read(file, redir->filename, redir->expand);
-		close(file);
-		free(filename);
+		here_doc_read(file, redir->filename, redir->expand, filename);
 		cleanup_heredoc_child(get_shell());
 		exit(0);
 	}
@@ -74,7 +71,8 @@ int	spawn_here_doc_reader(t_redir *redir, int file, char *filename)
 
 int	finish_here_doc(t_redir *redir, char *filename, int status)
 {
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	if ((WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		|| (WIFEXITED(status) && WEXITSTATUS(status) == 130))
 	{
 		write(1, "\n", 1);
 		unlink(filename);

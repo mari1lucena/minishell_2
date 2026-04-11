@@ -39,6 +39,19 @@ void	ign_signals(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
+void	heredoc_sigint(int sig)
+{
+	(void)sig;
+	if (get_shell()->heredoc_tmp_file)
+	{
+		close(3);
+		free(get_shell()->heredoc_tmp_file);
+		get_shell()->heredoc_tmp_file = NULL;
+	}
+	cleanup_heredoc_child(get_shell());
+	exit(130);
+}
+
 void	append_token_list(t_token **head, t_token *new_node)
 {
 	t_token	*current;

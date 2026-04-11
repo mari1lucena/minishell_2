@@ -6,17 +6,18 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:04:28 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/11 18:21:54 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/11 22:32:13 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	here_doc_read(int file, char *del, int should_expand)
+void	here_doc_read(int file, char *del, int should_expand, char *filename)
 {
 	char	*line;
-	char	*expanded_line;
 
+	get_shell()->heredoc_tmp_file = filename;
+	signal(SIGINT, heredoc_sigint);
 	while (1)
 	{
 		line = readline("> ");
@@ -28,17 +29,12 @@ void	here_doc_read(int file, char *del, int should_expand)
 			free(line);
 			break ;
 		}
-		expanded_line = NULL;
-		if (should_expand)
-			expanded_line = expand_heredoc_line(line);
-		if (expanded_line)
-			write(file, expanded_line, ft_strlen(expanded_line));
-		else
-			write(file, line, ft_strlen(line));
-		write(file, "\n", 1);
-		free(expanded_line);
+		process_heredoc_line(file, line, should_expand);
 		free(line);
 	}
+	close(file);
+	free(filename);
+	get_shell()->heredoc_tmp_file = NULL;
 }
 
 char	*create_tmp_filename(void)

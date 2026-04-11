@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:50:01 by made-jes          #+#    #+#             */
-/*   Updated: 2026/04/11 18:40:20 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/11 22:32:38 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_shell
 	int			fd;
 	int			last_exit;
 	int			in_prompt;
+	char		*heredoc_tmp_file;
 }				t_shell;
 
 t_shell			*get_shell(void);
@@ -139,6 +140,7 @@ void			parse_redirections(t_ast *node, t_token *start, t_token *end);
 //Signals and commands to exit
 void			setup_signals(void);
 void			ign_signals(void);
+void			heredoc_sigint(int sig);
 
 //Freeing
 void			free_split(char **arr);
@@ -190,7 +192,8 @@ int				is_valid_identifier(char *str);
 //HereDoc
 void			cleanup_heredoc_child(t_shell *shell);
 char			*expand_heredoc_line(char *line);
-void			here_doc_read(int file, char *del, int should_expand);
+void			here_doc_read(int file, char *del, int should_expand,
+					char *filename);
 char			*create_tmp_filename(void);
 int				prepare_here_doc_file(char **filename);
 int				spawn_here_doc_reader(t_redir *redir, int file, char *filename);
@@ -198,5 +201,6 @@ int				finish_here_doc(t_redir *redir, char *filename, int status);
 int				handle_here_doc(t_redir *redir);
 int				handle_here_doc_tree(t_ast *ast);
 int				here_doc_execution(t_redir *redir);
+void			process_heredoc_line(int file, char *line, int should_expand);
 
 #endif
