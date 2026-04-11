@@ -76,8 +76,6 @@ static void	process_single_token(t_token **new, t_token *current, t_token *prev)
 			free(stripped);
 			append_token_list(new, new_node);
 		}
-		else if (prev && prev->type == HEREDOC)
-			append_token_list(new, new_token(current->value));
 		else
 			process_token(new, current, !current->was_quoted);
 	}

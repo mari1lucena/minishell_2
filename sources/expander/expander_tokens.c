@@ -111,7 +111,7 @@ char	*expand_token_value(char *str)
 			i++;
 			continue ;
 		}
-		res = expand_or_append(res, str, &i, quote);
+		res = ft_strjoin_char_free(res, str[i++]);
 	}
 	return (res);
 }
