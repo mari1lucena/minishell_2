@@ -24,11 +24,6 @@ static int	var_len(const char *str)
 	return (i);
 }
 
-static char	*expand_exit_status(void)
-{
-	return (ft_itoa(get_shell()->last_exit));
-}
-
 static char	*handle_braced_var(char *res, char *str, int *i)
 {
 	char	*key;
@@ -53,16 +48,12 @@ char	*expand_var(char *res, char *str, int *i)
 {
 	char	*key;
 	char	*val;
+	char	*special;
 	int		len;
 
-	if (str[*i] == '?')
-	{
-		val = expand_exit_status();
-		res = ft_strjoin_free(res, val);
-		free(val);
-		(*i)++;
-		return (res);
-	}
+	special = expand_special_var(res, str, i);
+	if (special)
+		return (special);
 	if (str[*i] == '{')
 		return (handle_braced_var(res, str, i));
 	len = var_len(&str[*i]);

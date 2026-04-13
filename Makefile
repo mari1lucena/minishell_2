@@ -16,7 +16,7 @@ OBJ_DIR = ./obj
 
 SOURCES = main.c lexer/lexer.c lexer/utils_lexer.c lexer/utils_lex_aux.c prompt.c parser/parser.c \
 		parser/utils.c parser/utils_parser_aux.c expander/expander.c expander/utils_exp.c signals.c freeing.c \
-		expander/expander_tokens.c expander/expander_2.c \
+		expander/expander_tokens.c expander/expander_2.c expander/expander_3.c \
 		execution/execution.c execution/execution_cmd.c execution/heredoc.c execution/heredoc_utils.c execution/heredoc2.c \
 		execution/redirections.c execution/path_helper_funcs.c execution/envp.c execution/ex_helper.c execution/execution_aux.c \
 		builtins/ft_echo.c builtins/ft_env.c builtins/ft_exit.c builtins/ft_export.c builtins/ft_export_utils.c builtins/ft_pwd.c \

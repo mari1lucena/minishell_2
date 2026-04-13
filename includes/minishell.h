@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:50:01 by made-jes          #+#    #+#             */
-/*   Updated: 2026/04/11 22:32:38 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/14 00:52:55 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ typedef struct s_shell
 	int			last_exit;
 	int			in_prompt;
 	char		*heredoc_tmp_file;
+	pid_t		pid_shell;
 }				t_shell;
 
 t_shell			*get_shell(void);
@@ -124,6 +125,7 @@ char			*expand_token_value(char *str);
 char			*expand_without_split(char *str, int *had_quoted_space);
 char			*handle_dollar_quote(char *res, char *str, int *i);
 char			*expand_dollar(char *str);
+char			*expand_special_var(char *res, char *str, int *i);
 
 //Parsing
 int				validate_syntax(t_token *tokens);
