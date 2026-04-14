@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_print.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlucena- <mlucena-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:06:29 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/03/28 12:06:33 by mlucena-         ###   ########.fr       */
+/*   Updated: 2026/04/14 21:17:09 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,33 @@ void	sort_env_array(char **arr)
 	}
 }
 
+static int	print_export_entry(char *entry)
+{
+	char	*eq;
+
+	eq = ft_strchr(entry, '=');
+	if (eq)
+		*eq = '\0';
+	if (ft_strncmp(entry, "_", 2) == 0)
+	{
+		if (eq)
+			*eq = '=';
+		return (0);
+	}
+	if (eq)
+	{
+		printf("declare -x %s=\"%s\"\n", entry, eq + 1);
+		*eq = '=';
+	}
+	else
+		printf("declare -x %s\n", entry);
+	return (0);
+}
+
 void	print_export_sorted(t_env *env)
 {
 	char	**arr;
 	int		i;
-	char	*eq;
 
 	arr = env_to_array(env);
 	if (!arr)
@@ -93,15 +115,7 @@ void	print_export_sorted(t_env *env)
 	i = 0;
 	while (arr[i])
 	{
-		eq = ft_strchr(arr[i], '=');
-		if (eq)
-		{
-			*eq = '\0';
-			printf("declare -x %s=\"%s\"\n", arr[i], eq + 1);
-			*eq = '=';
-		}
-		else
-			printf("declare -x %s\n", arr[i]);
+		print_export_entry(arr[i]);
 		i++;
 	}
 	free_envp(arr);
