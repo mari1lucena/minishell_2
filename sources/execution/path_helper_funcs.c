@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_helper_funcs.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marilins <marilins@student.42.fr>          +#+  +:+       +#+        */
+/*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:20:09 by made-jes          #+#    #+#             */
-/*   Updated: 2026/03/31 18:43:28 by marilins         ###   ########.fr       */
+/*   Updated: 2026/04/14 21:37:03 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@ static char	*check_special_cmd(char *cmd, t_shell *shell)
 {
 	if (!ft_strncmp(cmd, ".", 2))
 	{
-		printf(".: filename argument\
-			required\n.: usage: . filename [arguments]\n");
+		printf(".: filename argument required\n");
+		printf(".: usage: . filename [arguments]");
 		shell->last_exit = 2;
-		return (NULL);
+		return ((char *)-1);
 	}
 	if (!ft_strncmp(cmd, "..", 3))
 	{
 		shell->last_exit = 127;
-		return (NULL);
+		return ((char *)-1);
 	}
 	return ((char *)1);
 }
@@ -74,8 +74,8 @@ char	*find_path(char *cmd, t_shell *shell)
 	char	*special;
 
 	special = check_special_cmd(cmd, shell);
-	if (!special)
-		return (NULL);
+	if (special == (char *)-1)
+		return ((char *)-1);
 	if (ft_strchr(cmd, '/'))
 	{
 		if (access(cmd, X_OK) == 0)

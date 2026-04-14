@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 09:15:14 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/11 16:56:33 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/14 21:36:09 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ char	*prepare_child(t_ast *node, int *fds, t_shell *shell, int fds_sup[2])
 		path = ft_strdup(node->cmd_args[0]);
 	else
 		path = find_path(node->cmd_args[0], shell);
+	if (path == (char *)-1)
+		exit(shell->last_exit);
 	checker_path(path, node, shell);
 	return (path);
 }
