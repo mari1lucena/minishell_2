@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 23:06:41 by made-jes          #+#    #+#             */
-/*   Updated: 2026/04/14 00:52:23 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/15 00:20:07 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,29 +68,6 @@ t_env	*convert_envp_to_list(char **envp)
 		last = node;
 	}
 	return (head);
-}
-
-void	init_shell(char **envp)
-{
-	t_shell	*sh;
-
-	sh = get_shell();
-	sh->env = NULL;
-	if (envp && envp[0])
-		sh->env = convert_envp_to_list(envp);
-	else
-	{
-		add_env_var("PATH=/usr/local/bin:/usr/bin:/bin");
-		add_env_var("PWD=.");
-	}
-	sh->last_exit = 0;
-	sh->fd = -1;
-	sh->line = NULL;
-	sh->tokens = NULL;
-	sh->ast = NULL;
-	sh->in_prompt = 0;
-	sh->heredoc_tmp_file = NULL;
-	sh->pid_shell = getpid();
 }
 
 char	*handle_dollar_quote(char *res, char *str, int *i)

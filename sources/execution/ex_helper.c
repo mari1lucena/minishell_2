@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 09:15:14 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/14 21:36:09 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/15 00:35:29 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	exec_cmd_aux(t_ast *node, int *fds, t_shell *shell, int fds_sup[2])
 
 	path = prepare_child(node, fds, shell, fds_sup);
 	envp = env_array(shell->env);
+	increment_shlvl_in_array(envp);
 	apply_redirecs(node->redirs);
 	execve(path, node->cmd_args, envp);
 	perror("execve");

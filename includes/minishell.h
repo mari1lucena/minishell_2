@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:50:01 by made-jes          #+#    #+#             */
-/*   Updated: 2026/04/14 00:52:55 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/15 00:35:55 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ char			*expand_without_split(char *str, int *had_quoted_space);
 char			*handle_dollar_quote(char *res, char *str, int *i);
 char			*expand_dollar(char *str);
 char			*expand_special_var(char *res, char *str, int *i);
+t_env			*convert_envp_to_list(char **envp);
 
 //Parsing
 int				validate_syntax(t_token *tokens);
@@ -171,6 +172,7 @@ char			**env_array(t_env *env);
 void			free_envp(char **envp);
 int				is_builtin(t_ast *node);
 int				exec_builtin(t_shell *shell, char **args);
+void			increment_shlvl_in_array(char **envp);
 
 //Builtins
 int				ft_echo(char **args);
