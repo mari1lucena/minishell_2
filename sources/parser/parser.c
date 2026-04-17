@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 20:00:48 by made-jes          #+#    #+#             */
-/*   Updated: 2026/04/14 20:50:34 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/17 16:03:10 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,11 @@ static int	validate_token_syntax(t_token *tokens, t_token *prev)
 	if (tokens->type == REDIR_IN || tokens->type == REDIR_OUT
 		|| tokens->type == APPEND || tokens->type == HEREDOC)
 	{
+		if (!tokens->next)
+			return (syntax_error("newline"));
 		if (!tokens->next || (tokens->next->type != WORD
 				&& tokens->next->type != STR))
-			return (syntax_error(tokens->value));
+			return (syntax_error(tokens->next->value));
 	}
 	return (0);
 }
