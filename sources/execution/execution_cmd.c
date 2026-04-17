@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:03:43 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/11 17:34:32 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/17 23:25:00 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ static void	write_status(int exit_code)
 {
 	if (exit_code == 131)
 		write(1, "Quit\n", 5);
-	if (exit_code == 2)
-		write(1, "\n", 1);
 }
 
 static void	fork_wait(t_ast *node, int *fds, t_shell *shell, int fds_sup[2])

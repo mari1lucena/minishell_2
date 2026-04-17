@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 17:20:09 by made-jes          #+#    #+#             */
-/*   Updated: 2026/04/17 23:07:58 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/17 23:19:36 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static char	*check_special_cmd(char *cmd, t_shell *shell)
 {
 	if (!ft_strncmp(cmd, ".", 2))
 	{
-		ft_putstr_fd(".: filename argument required\n", 2);
-		ft_putstr_fd(".: usage: . filename [arguments]", 2);
+		ft_putstr_fd("minishell.: filename argument required\n", 2);
+		ft_putstr_fd(".: usage: . filename [arguments]\n", 2);
 		shell->last_exit = 2;
 		free_env_list(get_shell()->env);
 		free_ast(get_shell()->ast);
