@@ -81,6 +81,8 @@ char	*expand_without_split(char *str, int *had_quoted_space)
 	{
 		if (str[i] == '$' && str[i + 1] == '"' && !quote)
 			res = handle_dollar_quote(res, str, &i);
+		else if (str[i] == '$' && str[i + 1] == '\'' && !quote)
+			res = handle_dollar_quote(res, str, &i);
 		else if (handle_quotes_expander(&quote, str[i]))
 			i++;
 		else

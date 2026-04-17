@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 23:06:41 by made-jes          #+#    #+#             */
-/*   Updated: 2026/04/15 00:20:07 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/17 20:56:52 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ t_env	*convert_envp_to_list(char **envp)
 char	*handle_dollar_quote(char *res, char *str, int *i)
 {
 	*i += 2;
-	while (str[*i] && str[*i] != '"')
+	while (str[*i] && (str[*i] != '"' && str[*i] != '\'' ))
 		res = ft_strjoin_char_free(res, str[(*i)++]);
-	if (str[*i] == '"')
+	if (str[*i] == '"' || str[*i] == '\'')
 		(*i)++;
 	return (res);
 }
