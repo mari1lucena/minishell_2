@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 19:33:21 by made-jes          #+#    #+#             */
-/*   Updated: 2026/04/14 20:36:33 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/17 20:00:37 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,12 @@ static int	process_line(char *line)
 	get_shell()->tokens = tokens;
 	expand_tokens(&tokens);
 	get_shell()->tokens = tokens;
+	if (!tokens)
+	{
+		get_shell()->last_exit = 0;
+		free(line);
+		return (0);
+	}
 	if (validate_syntax(tokens))
 	{
 		free_token_list(tokens);

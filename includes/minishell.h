@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:50:01 by made-jes          #+#    #+#             */
-/*   Updated: 2026/04/15 00:35:55 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/17 20:34:09 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,8 @@ void			free_envp(char **envp);
 int				is_builtin(t_ast *node);
 int				exec_builtin(t_shell *shell, char **args);
 void			increment_shlvl_in_array(char **envp);
+char			*prepare_child(t_ast *node, int *fds, t_shell *shell,
+					int fds_sup[2]);
 
 //Builtins
 int				ft_echo(char **args);

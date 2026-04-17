@@ -32,6 +32,8 @@ static void	handle_split_token(t_token **new, t_token *current, char *exp)
 	t_token	*new_node;
 	t_token	*tmp;
 
+	if (!exp || exp[0] == '\0')
+		return ;
 	lst = split_and_create_tokens(exp);
 	if (lst)
 	{

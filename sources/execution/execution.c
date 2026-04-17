@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:03:53 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/04 17:44:38 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/17 20:16:17 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,20 @@ void	wait_for_all_children(t_shell *shell)
 			break ;
 	}
 	(void)shell;
+}
+
+void	exec_cmd_aux(t_ast *node, int *fds, t_shell *shell, int fds_sup[2])
+{
+	char	*path;
+	char	**envp;
+
+	path = prepare_child(node, fds, shell, fds_sup);
+	envp = env_array(shell->env);
+	increment_shlvl_in_array(envp);
+	apply_redirecs(node->redirs);
+	execve(path, node->cmd_args, envp);
+	perror("execve");
+	shell->last_exit = 1;
+	free(path);
+	cleanup_and_exit(shell, 1);
 }
