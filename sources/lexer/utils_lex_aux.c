@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/11 18:43:17 by made-jes          #+#    #+#             */
-/*   Updated: 2026/04/11 18:43:20 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/17 16:28:48 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static char	*get_next_token(const char *line, int *i)
 {
+	if (line[*i] == '\'' || line[*i] == '"')
+		return (handle_word(line, i));
 	if ((line[*i] == '>' && line[*i + 1] == '>')
 		|| (line[*i] == '<' && line[*i + 1] == '<'))
 		return (handle_double_operator(line, i));

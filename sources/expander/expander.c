@@ -30,14 +30,25 @@ static void	handle_split_token(t_token **new, t_token *current, char *exp)
 {
 	t_token	*lst;
 	t_token	*new_node;
+	t_token	*tmp;
 
 	lst = split_and_create_tokens(exp);
 	if (lst)
+	{
+		tmp = lst;
+		while (tmp)
+		{
+			tmp->type = current->type;
+			tmp->was_quoted = current->was_quoted;
+			tmp = tmp->next;
+		}
 		append_token_list(new, lst);
+	}
 	else
 	{
 		new_node = new_token(exp);
 		new_node->was_quoted = current->was_quoted;
+		new_node->type = current->type;
 		append_token_list(new, new_node);
 	}
 }
@@ -56,6 +67,7 @@ static void	process_token(t_token **new, t_token *current, int split)
 	{
 		new_node = new_token(exp);
 		new_node->was_quoted = current->was_quoted;
+		new_node->type = current->type;
 		append_token_list(new, new_node);
 	}
 	free(exp);
@@ -73,6 +85,7 @@ static void	process_single_token(t_token **new, t_token *current, t_token *prev)
 			stripped = expand_token_value(current->value);
 			new_node = new_token(stripped);
 			new_node->was_quoted = current->was_quoted;
+			new_node->type = current->type;
 			free(stripped);
 			append_token_list(new, new_node);
 		}
