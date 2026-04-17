@@ -51,6 +51,11 @@ char	*expand_var(char *res, char *str, int *i)
 	char	*special;
 	int		len;
 
+	if (ft_isdigit(str[*i]))
+	{
+		(*i)++;
+		return (res);
+	}
 	special = expand_special_var(res, str, i);
 	if (special)
 		return (special);
