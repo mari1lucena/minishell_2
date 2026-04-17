@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:07:13 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/11 17:40:42 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/18 00:07:02 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,30 +70,44 @@ int	exit_overflow(char *str)
 		return (ft_strncmp(str, EXIT_MAX, 20) <= 0);
 }
 
+static long	handle_exit_args(t_shell *shell, char **args, int is_interactive)
+{
+	long	exit_code;
+	
+	if (!ft_isnumeric(args[1]) || !exit_overflow(args[1]))
+	{
+		if (is_interactive)
+			printf("exit\n");
+		fprintf(stderr, "minishell: exit: %s: numeric argument required\n", args[1]);
+		exit_code = 2;
+		cleanup_and_exit(shell, exit_code);
+	}
+	if (args[2])
+	{
+		if (is_interactive)
+			printf("exit\n");
+		fprintf(stderr, "minishell: exit: too many arguments\n");
+		shell->last_exit = 1;
+		return (-1);
+	}
+	return ((unsigned char)ft_atoi(args[1]));
+}
+
 int	ft_exit(t_shell *shell, char **args)
 {
 	long	exit_code;
+	int		is_interactive;
 
+	is_interactive = isatty(STDIN_FILENO);
 	exit_code = 0;
 	if (args[1])
 	{
-		if (!ft_isnumeric(args[1]) || !exit_overflow(args[1]))
-		{
-			printf("exit\n");
-			fprintf(stderr, "exit: %s: numeric argument required\n", args[1]);
-			exit_code = 2;
-			cleanup_and_exit(shell, exit_code);
-		}
-		else if (args[2])
-		{
-			printf("exit\n");
-			fprintf(stderr, "exit: too many arguments\n");
+		exit_code = handle_exit_args(shell, args, is_interactive);
+		if (exit_code == -1)
 			return (1);
-		}
-		else
-			exit_code = (unsigned char)ft_atoi(args[1]);
 	}
-	printf("exit\n");
+	if (is_interactive)
+		printf("exit\n");
 	cleanup_and_exit(shell, exit_code);
 	exit(exit_code);
 }
