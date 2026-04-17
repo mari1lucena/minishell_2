@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:07:13 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/18 00:07:02 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/18 00:30:18 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,13 @@ int	exit_overflow(char *str)
 static long	handle_exit_args(t_shell *shell, char **args, int is_interactive)
 {
 	long	exit_code;
-	
+
 	if (!ft_isnumeric(args[1]) || !exit_overflow(args[1]))
 	{
 		if (is_interactive)
 			printf("exit\n");
-		fprintf(stderr, "minishell: exit: %s: numeric argument required\n", args[1]);
+		fprintf(stderr, "minishell: exit: %s: numeric argument required\n",
+			args[1]);
 		exit_code = 2;
 		cleanup_and_exit(shell, exit_code);
 	}

@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:06:38 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/18 00:10:56 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/18 00:40:51 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,22 @@ int	ft_cd(t_shell *shell, char **args)
 	char	cwd[PATH_MAX];
 
 	if (args[1] && args[2])
-		return (fprintf(stderr, "cd: too many arguments\n"), 1);
+		return (fprintf(stderr, "minishell: cd: too many arguments\n"), 1);
 	oldpwd = get_env_value_from_env(shell->env, "PWD");
 	if (oldpwd)
 		oldpwd = ft_strdup(oldpwd);
 	target = resolve_cd_target(shell, args[1]);
 	if (!target)
-		return (printf("cd: no such file or directory\n"), free(oldpwd), 1);
+	{
+		printf("minishell: cd: No such file or directory\n");
+		return (free(oldpwd), 1);
+	}
 	if (chdir(target) != 0)
-		return (perror("cd"), free(oldpwd), 1);
+	{
+		fprintf(stderr, "minishell: cd: %s: No such file or directory\n",
+			args[1]);
+		return (free(oldpwd), 1);
+	}
 	if (args[1] && ft_strncmp(args[1], "-", 2) == 0 && getcwd(cwd, sizeof(cwd)))
 		printf("%s\n", target);
 	update_cd_env(shell, oldpwd);
