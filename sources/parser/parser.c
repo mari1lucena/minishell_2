@@ -14,7 +14,8 @@
 
 int	syntax_error(char *token)
 {
-	printf("minishell: syntax error near unexpected token `%s'\n", token);
+	fprintf(stderr, "minishell: syntax error near unexpected token `%s'\n", token);
+	get_shell()->last_exit = 2;
 	return (1);
 }
 
