@@ -6,50 +6,48 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 00:19:33 by made-jes          #+#    #+#             */
-/*   Updated: 2026/04/18 02:30:54 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/18 21:40:33 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static char	*create_shlvl_entry(int shlvl)
+static char	*create_shlvl_value(int shlvl)
 {
 	char	*new_shlvl;
-	char	*new_entry;
 
 	shlvl++;
 	if (shlvl < 0)
 		shlvl = 0;
+	if (shlvl > 1000)
+		shlvl = 1;
 	new_shlvl = ft_itoa(shlvl);
-	if (!new_shlvl)
-		return (NULL);
-	new_entry = ft_strjoin("SHLVL=", new_shlvl);
-	free(new_shlvl);
-	return (new_entry);
+	return (new_shlvl);
 }
 
-void	increment_shlvl_in_array(char **envp)
+void	increment_shlvl(void)
 {
-	int		i;
+	t_env	*env;
 	int		shlvl;
 	char	*new_entry;
 
-	i = 0;
-	while (envp[i])
+	env = get_shell()->env;
+	while (env)
 	{
-		if (ft_strncmp(envp[i], "SHLVL=", 6) == 0)
+		if (ft_strncmp(env->key, "SHLVL", 5) == 0)
 		{
-			shlvl = ft_atoi(envp[i] + 6);
-			new_entry = create_shlvl_entry(shlvl);
+			shlvl = ft_atoi(env->value);
+			new_entry = create_shlvl_value(shlvl);
 			if (new_entry)
 			{
-				free(envp[i]);
-				envp[i] = new_entry;
+				free(env->value);
+				env->value = new_entry;
 			}
 			return ;
 		}
-		i++;
+		env = env->next;
 	}
+	add_env_var("SHLVL=1");
 }
 
 void	init_shell(char **envp)
@@ -59,7 +57,10 @@ void	init_shell(char **envp)
 	sh = get_shell();
 	sh->env = NULL;
 	if (envp && envp[0])
+	{
 		sh->env = convert_envp_to_list(envp);
+		increment_shlvl();
+	}
 	else
 	{
 		add_env_var("PATH=/usr/local/bin:/usr/bin:/bin");
