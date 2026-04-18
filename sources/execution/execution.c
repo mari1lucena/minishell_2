@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:03:53 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/18 02:33:01 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/18 12:33:09 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	exec_cmd_aux(t_ast *node, int *fds, t_shell *shell, int fds_sup[2])
 	if (node->cmd_args[0][0] == '\0')
 	{
 		ft_putstr_fd(": command not found\n", 2);
+		restore_stds(fds_sup);
 		get_shell()->last_exit = 127;
 		cleanup_and_exit(shell, 127);
 		return (127);
