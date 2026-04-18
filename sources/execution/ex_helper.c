@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 09:15:14 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/17 20:47:36 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/18 02:07:10 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,6 @@ char	*prepare_child(t_ast *node, int *fds, t_shell *shell, int fds_sup[2])
 	setup_child(fds, fds_sup, shell);
 	while (*args && **args == '\0')
 		args++;
-	if (!node->cmd_args || !node->cmd_args[0] || node->cmd_args[0][0] == '\0')
-	{
-		ft_putstr_fd(": command not found\n", 2);
-		get_shell()->last_exit = 127;
-		cleanup_and_exit(shell, 127);
-	}
 	if (ft_strchr(node->cmd_args[0], '/'))
 		path = ft_strdup(node->cmd_args[0]);
 	else

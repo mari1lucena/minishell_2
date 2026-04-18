@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:50:01 by made-jes          #+#    #+#             */
-/*   Updated: 2026/04/17 20:34:09 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/18 02:30:59 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ void			exec_ast(t_ast *node, int *fds, t_shell *shell);
 void			restore_stds(int fds[2]);
 void			exec_cmd_for_builtin(t_ast *node, int *fds_sup,\
 					t_shell *shell, int in_pipe);
-void			exec_cmd_aux(t_ast *node, int *fds,\
+int				exec_cmd_aux(t_ast *node, int *fds,\
 					t_shell *shell, int fds_sup[2]);
 void			exec_cmd(t_ast *node, int *fds, t_shell *shell);
 void			exec_pipe(t_ast *node, int *fds, t_shell *shell);

@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:03:53 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/17 20:16:17 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/18 02:33:01 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,23 @@ void	wait_for_all_children(t_shell *shell)
 	(void)shell;
 }
 
-void	exec_cmd_aux(t_ast *node, int *fds, t_shell *shell, int fds_sup[2])
+int	exec_cmd_aux(t_ast *node, int *fds, t_shell *shell, int fds_sup[2])
 {
 	char	*path;
 	char	**envp;
 
+	if (!node->cmd_args || !node->cmd_args[0])
+		return (cleanup_and_exit(shell, 0), 0);
+	if (node->cmd_args[0][0] == '\0')
+	{
+		ft_putstr_fd(": command not found\n", 2);
+		get_shell()->last_exit = 127;
+		cleanup_and_exit(shell, 127);
+		return (127);
+	}
 	path = prepare_child(node, fds, shell, fds_sup);
+	if (!path)
+		return (get_shell()->last_exit = 127, 127);
 	envp = env_array(shell->env);
 	increment_shlvl_in_array(envp);
 	apply_redirecs(node->redirs);
@@ -50,4 +61,5 @@ void	exec_cmd_aux(t_ast *node, int *fds, t_shell *shell, int fds_sup[2])
 	shell->last_exit = 1;
 	free(path);
 	cleanup_and_exit(shell, 1);
+	return (0);
 }
