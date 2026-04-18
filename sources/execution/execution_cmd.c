@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:03:43 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/18 12:56:09 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/18 13:25:07 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,17 +87,19 @@ void	exec_cmd(t_ast *node, int *fds, t_shell *shell)
 	if (fds[1] != STDOUT_FILENO)
 		dup2(fds[1], STDOUT_FILENO);
 	if (is_builtin(node))
-		exec_cmd_for_builtin(node, fds_sup, shell, in_pipe);
-	else
 	{
-		if (apply_redirecs(node->redirs))
-		{
-			restore_stds(fds_sup);
-			shell->last_exit = 1;
-			return ;
-		}
-		fork_wait(node, fds, shell, fds_sup);
+		exec_cmd_for_builtin(node, fds_sup, shell, in_pipe);
 		restore_stds(fds_sup);
+		return ;
 	}
+	if (apply_redirecs(node->redirs))
+	{
+		restore_stds(fds_sup);
+		shell->last_exit = 1;
+		return ;
+	}
+	if (!node->cmd_args || !node->cmd_args[0])
+		return (restore_stds(fds_sup));
+	fork_wait(node, fds, shell, fds_sup);
 	restore_stds(fds_sup);
 }
