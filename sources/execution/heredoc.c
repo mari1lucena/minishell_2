@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:04:28 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/11 22:32:13 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/18 01:04:30 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,28 +39,20 @@ void	here_doc_read(int file, char *del, int should_expand, char *filename)
 
 char	*create_tmp_filename(void)
 {
-	char	*base;
-	char	*num;
-	char	*name;
-	int		i;
+	static int	i;
+	char		*name;
+	char		*num;
+	char		*tmp;
 
-	base = "/tmp/minishell_heredoc_";
-	i = 0;
-	while (i < 10000)
-	{
-		num = ft_itoa(i);
-		if (!num)
-			return (NULL);
-		name = ft_strjoin(base, num);
-		free(num);
-		if (!name)
-			return (NULL);
-		if (access(name, F_OK) != 0)
-			return (name);
-		free(name);
-		i++;
-	}
-	return (NULL);
+	num = ft_itoa(i++);
+	if (!num)
+		return (NULL);
+	tmp = ft_strjoin("/tmp/minishell_heredoc_", num);
+	free(num);
+	if (!tmp)
+		return (NULL);
+	name = tmp;
+	return (name);
 }
 
 int	handle_here_doc(t_redir *redir)
