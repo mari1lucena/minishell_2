@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:07:36 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/11 17:42:57 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/18 01:37:01 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,9 @@ static int	handle_export_arg(t_shell *shell, char *arg)
 	key = NULL;
 	value = NULL;
 	if (!is_valid_identifier(arg))
-	{
-		fprintf(stderr, "minishell:export:`%s': not a valid identifier\n", arg);
-		return (1);
-	}
+		return (ft_putstr_fd("minishell: export: `", 2),
+			ft_putstr_fd(arg, 2),
+			ft_putstr_fd("': not a valid identifier\n", 2), 1);
 	if (!parse_export_arg(arg, &key, &value, &has_equal))
 		return (1);
 	if (key[0] == '\0')

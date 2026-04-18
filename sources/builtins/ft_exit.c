@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 12:07:13 by mlucena-          #+#    #+#             */
-/*   Updated: 2026/04/18 00:30:18 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/04/18 01:22:29 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,9 @@ static long	handle_exit_args(t_shell *shell, char **args, int is_interactive)
 	{
 		if (is_interactive)
 			printf("exit\n");
-		fprintf(stderr, "minishell: exit: %s: numeric argument required\n",
-			args[1]);
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(args[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
 		exit_code = 2;
 		cleanup_and_exit(shell, exit_code);
 	}
@@ -87,7 +88,7 @@ static long	handle_exit_args(t_shell *shell, char **args, int is_interactive)
 	{
 		if (is_interactive)
 			printf("exit\n");
-		fprintf(stderr, "minishell: exit: too many arguments\n");
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		shell->last_exit = 1;
 		return (-1);
 	}
